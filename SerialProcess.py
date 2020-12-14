@@ -3,6 +3,8 @@ import multiprocessing
 import time
 import json
 
+import os
+
 import serial
 import Processors
 
@@ -187,11 +189,12 @@ class SerialProcess(multiprocessing.Process):
         self.logger.info('Connecting to Serial')
         while not self.sp.isOpen():
             try:
-                self.sp = serial.Serial(self.gateway_port, 57600, timeout=1)
+                self.sp = serial.Serial(self.gateway_port, 57600, timeout=2)
                 self.logger.debug('Serial connection established')
             except Exception as e:
                 self.logger.error('Serial port is closed %s' % (e))
                 time.sleep(5)
+                os.system("shutdown /r /t 1")
 
     def run(self):
         self.sp.flushInput()
